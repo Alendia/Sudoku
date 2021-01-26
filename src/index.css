@@ -1,0 +1,37 @@
+body {
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 20px;
+}
+
+.square {
+    background-color: #fff;
+    border: 1px solid #999;
+    float: left;
+    margin-right: -1px;
+    margin-top: -1px;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+}
+
+.region-row::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.region {
+    display: inline;
+    
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 90px);
+    grid-template-rows: repeat(3, 90px);
+    column-gap: 10px;
+    row-gap: 10px;
+    justify-items: center;
+    align-items: center;
+}
