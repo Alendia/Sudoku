@@ -6,6 +6,8 @@ function Square(props) {
     return <button className="square">{props.value}</button>;
 }
 
+// 九格
+
 class Region extends React.Component {
     renderSquare(i) {
         return <Square />;
@@ -33,9 +35,15 @@ class Region extends React.Component {
     }
 }
 
+// 八十一格
+
 class Grid extends React.Component {
     renderRegion(i) {
-        return <Region className="region" />;
+        return (
+            <div className="region">
+                <Region />
+            </div>
+        );
     }
 
     renderRow(x, y) {
@@ -50,7 +58,7 @@ class Grid extends React.Component {
     renderContent(x, y) {
         let content = [];
         for (let i = 0; i < x; i++) {
-            content.push(<div className="grid-row">{this.renderRow(i, y)}</div>);
+            <div className="grid">{content.push(<div className="grid-row">{this.renderRow(i, y)}</div>)}</div>;
         }
         return content;
     }
@@ -59,6 +67,8 @@ class Grid extends React.Component {
         return this.renderContent(3, 3);
     }
 }
+
+// 数字选择框
 
 class NumInput extends React.Component {
     renderNumber(i) {
@@ -72,7 +82,7 @@ class NumInput extends React.Component {
         for (let i = 1; i <= 9; i++) {
             content.push(this.renderNumber(i));
         }
-        return content
+        return content;
     }
 }
 
@@ -83,7 +93,9 @@ class App extends React.Component {
                 <h1>Sudoku</h1>
                 <div className="game-info"></div>
                 <div className="game">
-                    <Grid className="grid" />
+                    <div className="grid">
+                        <Grid />
+                    </div>
                     <NumInput className="num-input" />
                 </div>
                 <div className="game-settings"></div>
