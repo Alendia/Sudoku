@@ -3,9 +3,16 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+#root {
+    display: block;
+    width: 300px;
+    margin: 0 auto;
+}
+
 .square {
-    background-color: #fff;
-    border: 1px solid #999;
+    background-color: #ff8f00;
+    border: 1px solid #ffc046;
+    border-radius: 3px;
     float: left;
     margin-right: -1px;
     margin-top: -1px;
@@ -32,15 +39,56 @@ body {
 
 .region:nth-child(3n)::after {
     padding: 0;
-    display: block;
+    display: inline-block;
 }
 
 .grid {
-    /* display: grid;
-    grid-template-columns: repeat(3, 90px);
-    grid-template-rows: repeat(3, 90px);
-    column-gap: 10px;
-    row-gap: 10px;
-    justify-items: center;
-    align-items: center; */
+    display: block;
+    margin: 0;
 }
+
+.game {
+    display: inline-block;
+    width: auto;
+    padding: 20px;
+    background-color: #ffc046;
+    border-radius: 5px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.main {
+    text-align: center;
+    width: 340px;
+}
+
+.num-input {
+    display: block;
+    margin: 0 auto;
+    width: 300px;
+}
+
+ul {
+    margin: 10px auto -4px auto;
+    width: 299px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(9, auto);
+    /* column-gap: 2px; */
+    justify-items: center;
+    align-items: center;
+    list-style-type: none;
+}
+
+li {
+    background-color: white;
+    border-radius: 2px;
+    width: 1.5rem;
+    height: 1.5rem;
+    text-align: center;
+    float: left;
+    margin-left: -1px;
+    margin-top: -1px;
+    margin: auto;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.10), 0 3px 3px rgba(0,0,0,0.10);
+}
+/* fuck css everyday!!! QAQ */

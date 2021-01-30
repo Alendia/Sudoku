@@ -58,7 +58,7 @@ class Grid extends React.Component {
     renderContent(x, y) {
         let content = [];
         for (let i = 0; i < x; i++) {
-            <div className="grid">{content.push(<div className="grid-row">{this.renderRow(i, y)}</div>)}</div>;
+            content.push(<div className="grid-row">{this.renderRow(i, y)}</div>);
         }
         return content;
     }
@@ -70,33 +70,31 @@ class Grid extends React.Component {
 
 // 数字选择框
 
-class NumInput extends React.Component {
-    renderNumber(i) {
-        <button className="number" value={i}>
-            {i}
-        </button>;
-    }
-
-    render() {
-        let content = [];
-        for (let i = 1; i <= 9; i++) {
-            content.push(this.renderNumber(i));
-        }
-        return content;
-    }
+function NumList(props) {
+    const numbers = props.numbers;
+    const listItems = numbers.map((number) => 
+        <li>{number}</li>
+    );
+    return (
+        <ul>{listItems}</ul>
+    )
 }
 
 class App extends React.Component {
     render() {
+        const numbers = Array.from({length: 9}, (item, index) => index + 1); // [0...9]
+
         return (
-            <div>
+            <div className="main">
                 <h1>Sudoku</h1>
                 <div className="game-info"></div>
                 <div className="game">
                     <div className="grid">
                         <Grid />
                     </div>
-                    <NumInput className="num-input" />
+                    <div className="num-input">
+                        <NumList numbers={numbers} />
+                    </div>
                 </div>
                 <div className="game-settings"></div>
             </div>
