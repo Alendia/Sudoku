@@ -72,22 +72,62 @@ class Grid extends React.Component {
 
 function NumList(props) {
     const numbers = props.numbers;
-    const listItems = numbers.map((number) => 
-        <li>{number}</li>
-    );
-    return (
-        <ul>{listItems}</ul>
-    )
+    const listItems = numbers.map((number) => <li>{number}</li>);
+    return <ul>{listItems}</ul>;
+}
+
+class TimeRecord extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            consumedTime: 0,
+        };
+    }
+
+    componentDidMount() {
+        this.timerID = setInterval(() => this.tick(), 1000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
+
+    tick() {
+        let consumedTime = this.state.consumedTime;
+        this.setState({ consumedTime: consumedTime + 1 });
+    }
+
+    handleGameOver() {
+        //
+    }
+
+    render() {
+        // calculate consumed time
+        let consumedTime = this.state.consumedTime;
+        let consumedDay = Math.floor(consumedTime / (60 * 24));
+        let consumedHour = Math.floor(consumedTime / 60) - consumedDay * 24;
+        let consumedSec = Math.floor(consumedTime) - consumedDay * 24 * 60 - consumedHour * 60;
+
+        return (
+            <div>
+                <span>{consumedDay}:{consumedHour}:{consumedSec}</span>
+            </div>
+        );
+    }
 }
 
 class App extends React.Component {
     render() {
-        const numbers = Array.from({length: 9}, (item, index) => index + 1); // [0...9]
+        const numbers = Array.from({ length: 9 }, (item, index) => index + 1); // [1...9]
 
         return (
             <div className="main">
                 <h1>Sudoku</h1>
-                <div className="game-info"></div>
+                <div className="game-info">
+                    <div className="time">
+                        <TimeRecord />
+                    </div>
+                </div>
                 <div className="game">
                     <div className="grid">
                         <Grid />
