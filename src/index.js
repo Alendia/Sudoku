@@ -72,7 +72,14 @@ class Grid extends React.Component {
 
 function NumList(props) {
     const numbers = props.numbers;
-    const listItems = numbers.map((number) => <li>{number}</li>);
+    // 我是傻逼，我应该写成 button
+    const listItems = numbers.map((number) => (
+        <button>
+            <li key={number.toString()} onClick={() => props.onClick(number)}>
+                {number}
+            </li>
+        </button>
+    ));
     return <ul>{listItems}</ul>;
 }
 
@@ -110,13 +117,31 @@ class TimeRecord extends React.Component {
 
         return (
             <div>
-                <span>{consumedDay}:{consumedHour}:{consumedSec}</span>
+                <span>
+                    {consumedDay}:{consumedHour}:{consumedSec}
+                </span>
             </div>
         );
     }
 }
 
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            gridValue: [...Array(9)].map((_) => [...Array(9).fill(null)]),
+            clickedNum: null,
+        };
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(index) {
+        this.setState({
+            // 我没有写回调函数但是还是很慢……为什么呢
+            clickedNum: index,
+        });
+    }
+
     render() {
         const numbers = Array.from({ length: 9 }, (item, index) => index + 1); // [1...9]
 
@@ -133,7 +158,7 @@ class App extends React.Component {
                         <Grid />
                     </div>
                     <div className="num-input">
-                        <NumList numbers={numbers} />
+                        <NumList numbers={numbers} onClick={this.handleClick} />
                     </div>
                 </div>
                 <div className="game-settings"></div>

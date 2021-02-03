@@ -88,7 +88,9 @@ li {
     float: left;
     margin-left: -1px;
     margin-top: -1px;
-    margin: auto;
+    font-size: 18px;
+    padding-top: 0.1rem;
+    box-sizing: border-box;
     box-shadow: 0 5px 10px rgba(0,0,0,0.10), 0 3px 3px rgba(0,0,0,0.10);
 }
 
@@ -99,5 +101,11 @@ li {
     border-radius: 5px;
     box-shadow: 0 5px 10px rgba(0,0,0,0.10), 0 3px 3px rgba(0,0,0,0.10);
     font-size: 18px;
+}
+
+button {
+    padding: 0;
+    border: none;
+    background: none;
 }
 /* fuck css everyday!!! QAQ */
