@@ -9,62 +9,35 @@ function Square(props) {
 // 九格
 
 class Region extends React.Component {
-    renderSquare(i) {
-        return <Square />;
-    }
-
-    renderRow(x, y) {
-        let content = [];
-        for (let i = 0; i < y; i++) {
-            let num = x * y + i;
-            content.push(this.renderSquare(num));
-        }
-        return content;
-    }
-
-    renderContent(x, y) {
-        let content = [];
-        for (let i = 0; i < x; i++) {
-            content.push(<div className="region-row">{this.renderRow(i, y)}</div>);
-        }
-        return content;
-    }
-
     render() {
-        return this.renderContent(3, 3);
+        let arr = (x) => [...Array(x).keys()].map((i) => i + 1);
+        return arr(3).map((i) => (
+            <div className="region-row">
+                {arr(3).map((j) =>
+                    ((n) => <Square key={n} onClick={() => this.props.onClick(n)} />)((i - 1) * 3 + j - 1)
+                )}
+            </div>
+        ));
     }
 }
 
 // 八十一格
 
 class Grid extends React.Component {
-    renderRegion(i) {
-        return (
-            <div className="region">
-                <Region />
-            </div>
-        );
-    }
-
-    renderRow(x, y) {
-        let content = [];
-        for (let i = 0; i < y; i++) {
-            let num = x * y + i;
-            content.push(this.renderRegion(num));
-        }
-        return content;
-    }
-
-    renderContent(x, y) {
-        let content = [];
-        for (let i = 0; i < x; i++) {
-            content.push(<div className="grid-row">{this.renderRow(i, y)}</div>);
-        }
-        return content;
-    }
-
     render() {
-        return this.renderContent(3, 3);
+        let arr = (x) => [...Array(x).keys()].map((i) => i + 1);
+        return arr(3).map((i) => (
+            <div className="grid-row">
+                {arr(3).map((j) =>
+                    ((m) => (
+                        <div className="region">
+                            {/* m is region index, n is square index */}
+                            <Region key={m} onClick={(n) => this.props.onClick(m, n)}/>
+                        </div>
+                    ))((i - 1) * 3 + j - 1)
+                )}
+            </div>
+        ));
     }
 }
 
@@ -72,10 +45,9 @@ class Grid extends React.Component {
 
 function NumList(props) {
     const numbers = props.numbers;
-    // 我是傻逼，我应该写成 button
     const listItems = numbers.map((number) => (
         <button>
-            <li key={number.toString()} onClick={() => props.onClick(number)}>
+            <li className="number" key={number.toString()} onClick={() => props.onClick(number)}>
                 {number}
             </li>
         </button>
@@ -133,12 +105,24 @@ class App extends React.Component {
             clickedNum: null,
         };
         this.handleClick = this.handleClick.bind(this);
+        this.updateFillinNum = this.updateFillinNum.bind(this);
     }
 
     handleClick(index) {
         this.setState({
             // 我没有写回调函数但是还是很慢……为什么呢
             clickedNum: index,
+        });
+    }
+
+    updateFillinNum(region, square) {
+        // 此处的 region 和 square 是 index
+        let gridValue = this.state.gridValue.slice();
+        gridValue[region][square] = this.state.clickedNum;
+        console.log(region, square);
+        console.log(gridValue);
+        this.setState({
+            gridValue: gridValue,
         });
     }
 
@@ -155,7 +139,7 @@ class App extends React.Component {
                 </div>
                 <div className="game">
                     <div className="grid">
-                        <Grid />
+                        <Grid onClick={(m, n) => this.updateFillinNum(m, n)} />
                     </div>
                     <div className="num-input">
                         <NumList numbers={numbers} onClick={this.handleClick} />
