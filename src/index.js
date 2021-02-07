@@ -139,7 +139,7 @@ class App extends React.Component {
                 </div>
                 <div className="game">
                     <div className="grid">
-                        <Grid onClick={(m, n) => this.updateFillinNum(m, n)} />
+                        <Grid onClick={(m, n) => {this.updateFillinNum(m, n); console.log(m, n)}} />
                     </div>
                     <div className="num-input">
                         <NumList numbers={numbers} onClick={this.handleClick} />
