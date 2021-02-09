@@ -9,12 +9,30 @@ function Square(props) {
 // 九格
 
 class Region extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+        this.addSquare = this.addSquare.bind(this);
+    }
+
+    // transmit prop
+    handleClick(e) {
+        this.props.onClick(e);
+        console.log(e.target.key);
+    }
+    
+    // add a prop for Grid
+    addSquare(e) {
+        console.log(e.target.key);
+        this.props.square(e.target.key);
+    }
+
     render() {
         let arr = (x) => [...Array(x).keys()].map((i) => i + 1);
         return arr(3).map((i) => (
             <div className="region-row">
                 {arr(3).map((j) =>
-                    ((n) => <Square key={n} onClick={() => this.props.onClick(n)} />)((i - 1) * 3 + j - 1)
+                    ((n) => <Square key={n} onClick={this.handleClick} value={this.addSquare} />)((i - 1) * 3 + j - 1)
                 )}
             </div>
         ));
@@ -24,6 +42,28 @@ class Region extends React.Component {
 // 八十一格
 
 class Grid extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {squareValue: ''};
+        this.handleClick = this.handleClick.bind(this);
+        this.addRegion = this.addRegion.bind(this);
+        this.handleAddSquare = this.handleAddSquare.bind(this);
+    }
+
+    // transmit a prop
+    handleClick(square) {
+        console.log(square);
+        this.setState({squareValue: square})
+    }
+
+    addRegion(e) {
+        this.props.regionValue(e.target.key)
+    }
+
+    handleAddSquare(e) {
+        this.props.squareValue(this.state.squareValue);
+    }
+
     render() {
         let arr = (x) => [...Array(x).keys()].map((i) => i + 1);
         return arr(3).map((i) => (
@@ -32,7 +72,7 @@ class Grid extends React.Component {
                     ((m) => (
                         <div className="region">
                             {/* m is region index, n is square index */}
-                            <Region key={m} onClick={(n) => this.props.onClick(m, n)}/>
+                            <Region key={m} square={this.handleClick} onClick={this.addRegion}/>
                         </div>
                     ))((i - 1) * 3 + j - 1)
                 )}
@@ -103,9 +143,13 @@ class App extends React.Component {
         this.state = {
             gridValue: [...Array(9)].map((_) => [...Array(9).fill(null)]),
             clickedNum: null,
+            region: '',
+            square: '',
         };
         this.handleClick = this.handleClick.bind(this);
         this.updateFillinNum = this.updateFillinNum.bind(this);
+        this.handleRegion = this.handleRegion.bind(this);
+        this.handleSquare = this.handleSquare.bind(this);
     }
 
     handleClick(index) {
@@ -126,6 +170,16 @@ class App extends React.Component {
         });
     }
 
+    handleRegion(region) {
+        console.log(region);
+        this.setState({region: region})
+    }
+
+    handleSquare(square) {
+        console.log(square);
+        this.setState({square: square})
+    }
+
     render() {
         const numbers = Array.from({ length: 9 }, (item, index) => index + 1); // [1...9]
 
@@ -139,7 +193,7 @@ class App extends React.Component {
                 </div>
                 <div className="game">
                     <div className="grid">
-                        <Grid onClick={(m, n) => this.updateFillinNum(m, n)} />
+                        <Grid onClick={(m, n) => {this.updateFillinNum(m, n)}} regionValue={this.handleRegion} squareValue={this.handleSquare} />
                     </div>
                     <div className="num-input">
                         <NumList numbers={numbers} onClick={this.handleClick} />
