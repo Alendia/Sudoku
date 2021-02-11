@@ -2,6 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
+function arr(numbers) {
+    return [...Array(numbers).keys()].map((i) => i + 1);
+}
+
 function Square(props) {
     return (
         <button className="square" onClick={props.onClick}>
@@ -33,14 +37,11 @@ class Region extends React.Component {
         this.props.square(index);
         this.props.onClick(e);
     }
-    
+
     render() {
-        let arr = (x) => [...Array(x).keys()].map((i) => i + 1);
         return arr(3).map((i) => (
             <div className="region-row">
-                {arr(3).map((j) =>
-                    ((n) => <Square key={n} onClick={this.handleClick} />)((i - 1) * 3 + j - 1)
-                )}
+                {arr(3).map((j) => ((n) => <Square key={n} onClick={this.handleClick} />)((i - 1) * 3 + j - 1))}
             </div>
         ));
     }
@@ -77,14 +78,13 @@ class Grid extends React.Component {
     }
 
     render() {
-        let arr = (x) => [...Array(x).keys()].map((i) => i + 1);
         return arr(3).map((i) => (
             <div className="grid-row">
                 {arr(3).map((j) =>
                     ((m) => (
                         <div className="region">
                             {/* m is region index, n is square index */}
-                            <Region key={m} square={this.takeSquare} onClick={this.addRegion}/>
+                            <Region key={m} square={this.takeSquare} onClick={this.addRegion} />
                         </div>
                     ))((i - 1) * 3 + j - 1)
                 )}
@@ -175,7 +175,7 @@ class App extends React.Component {
         // 此处的 region 和 square 是 index
         let gridValue = this.state.gridValue.slice();
         let region = this.state.region;
-        let square = this.state.square; 
+        let square = this.state.square;
         gridValue[region][square] = this.state.clickedNum;
         console.log(region, square);
         console.log(gridValue);
@@ -185,11 +185,11 @@ class App extends React.Component {
     }
 
     handleRegion(region) {
-        this.setState({region: region})
+        this.setState({ region: region });
     }
 
     handleSquare(square) {
-        this.setState({square: square})
+        this.setState({ square: square });
     }
 
     render() {
