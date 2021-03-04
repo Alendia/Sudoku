@@ -170,29 +170,14 @@ class App extends React.Component {
             clicked: false,
         };
         this.handleClick = this.handleClick.bind(this);
-        this.updateFillinNum = this.updateFillinNum.bind(this);
         this.handleRegion = this.handleRegion.bind(this);
         this.handleSquare = this.handleSquare.bind(this);
     }
 
     handleClick(index) {
         this.setState({
-            // 我没有写回调函数但是还是很慢……为什么呢
             clickedNum: index,
             clicked: true,
-        });
-    }
-
-    updateFillinNum() {
-        // 此处的 region 和 square 是 index
-        let gridValue = this.state.gridValue.slice();
-        let region = this.state.region;
-        let square = this.state.square;
-        gridValue[region][square] = this.state.clickedNum;
-        console.log(region, square);
-        console.log(gridValue);
-        this.setState({
-            gridValue: gridValue,
         });
     }
 
@@ -212,16 +197,21 @@ class App extends React.Component {
         let regionIndex = this.state.region;
         let squareIndex = this.state.square;
         let squaresContent = currentGrid;
+        let occupiedInfo;
 
         // update the square value
         if (this.state.clicked === true && this.state.square !== "") {
-            console.log(this.state.clicked);
-            currentGrid[regionIndex][squareIndex] = this.state.clickedNum;
-            console.log("grid", currentGrid);
-            squaresContent = currentGrid;
-            console.log(squaresContent);
-            console.log("num", this.state.clickedNum);
-            this.setState({ gridValue: currentGrid, clicked: false, clickedNum: null });
+            if (currentGrid[regionIndex][squareIndex] !== null) {
+                occupiedInfo = "这里已经有数字了噢😥";
+            } else if (currentGrid[regionIndex][squareIndex] === null) {
+                console.log(this.state.clicked);
+                currentGrid[regionIndex][squareIndex] = this.state.clickedNum;
+                console.log("grid", currentGrid);
+                squaresContent = currentGrid;
+                console.log(squaresContent);
+                console.log("num", this.state.clickedNum);
+                this.setState({ gridValue: currentGrid, clicked: false, clickedNum: null });
+            }
         }
 
         // check the grid
@@ -250,6 +240,7 @@ class App extends React.Component {
                     <div className="num-input">
                         <NumList numbers={numbers} onClick={this.handleClick} />
                     </div>
+                    <p>{occupiedInfo}</p>
                 </div>
                 <div className="game-settings"></div>
             </div>
@@ -262,7 +253,11 @@ function CheckRegion(region, square, grid) {
     console.log(grid, region, square);
     console.log(grid[region], grid[region][square]);
     let squareValue = grid[region][square];
-    if (region !== null && square !== null && grid[region].reduce((prev, curr) => curr === squareValue ? prev + 1 : prev + 0) >= 2) {
+    if (
+        region !== null &&
+        square !== null &&
+        grid[region].reduce((prev, curr) => (curr === squareValue ? prev + 1 : prev + 0)) >= 2
+    ) {
         return [grid[region][square], true];
     }
 }
